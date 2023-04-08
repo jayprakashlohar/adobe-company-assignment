@@ -1,7 +1,162 @@
 import React from "react";
+import { Box, Text, Heading, FormLabel, Input, Button } from "@chakra-ui/react";
+import { SiAdobe } from "react-icons/si";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { signupUser } from "../Redux/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
-  return <div>Signup</div>;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [userData, setUserData] = useState({
+    name: "",
+    email: "",
+    bio: "",
+    password: "",
+  });
+
+  const handleSignup = (e) => {
+    e.preventDefault();
+    dispatch(signupUser(userData))
+      .then((res) => {
+        alert(res.response);
+        if (res.response === "user created successfully") {
+          navigate("/login");
+        }
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  };
+  return (
+    <>
+      <Box
+        h="100vh"
+        bgGradient="linear(to-l, #7928CA, #FF0080)"
+        display="flex"
+        justifyContent="space-around"
+        // alignItems="center"
+        // backgroundImage="url('https://t3.ftcdn.net/jpg/00/21/70/82/360_F_21708280_RFKz4O7ImQluB9FgX2mUYFUNDmlLokX6.jpg')"
+        // backgroundPosition="center"
+        // backgroundRepeat="no-repeat"
+      >
+        <Box w="30%" h="100px" mt="20%">
+          <Box display="flex" alignItems="center">
+            <SiAdobe
+              style={{ color: "#ffff", width: "50px", height: "50px" }}
+            />
+            <Text ml="10px" fontWeight="bold" fontSize="30px" color="#fff">
+              Adobe
+            </Text>
+          </Box>
+          <Text color="#ffff" fontSize="20px" fontWeight="500">
+            Sign in or create an account
+          </Text>
+        </Box>
+
+        {/* Signup Box */}
+        <Box
+          w="35%"
+          h="600px"
+          mt="30px"
+          background="#ffff"
+          p="25px"
+          borderRadius="5px"
+        >
+          <Heading textAlign="center" m="20px" fontFamily="cursive">
+            Signup here
+          </Heading>
+          <form onSubmit={handleSignup}>
+            <FormLabel fontFamily="cursive">Name</FormLabel>
+            <Input
+              type="text"
+              placeholder="Enter your name"
+              variant="flushed"
+              required
+              value={userData.name}
+              onChange={(e) => {
+                setUserData({ ...userData, name: e.target.value });
+              }}
+            />
+            <FormLabel mt="10px" fontFamily="cursive">
+              Email{" "}
+            </FormLabel>
+            <Input
+              type="email"
+              placeholder="Enter your email"
+              variant="flushed"
+              required
+              value={userData.email}
+              onChange={(e) => {
+                setUserData({ ...userData, email: e.target.value });
+              }}
+            />
+            <FormLabel mt="10px" fontFamily="cursive">
+              Bio{" "}
+            </FormLabel>
+            <Input
+              type="text"
+              placeholder="Optional"
+              variant="flushed"
+              required
+              value={userData.bio}
+              onChange={(e) => {
+                setUserData({ ...userData, bio: e.target.value });
+              }}
+            />
+            <FormLabel mt="10px" fontFamily="cursive">
+              Password{" "}
+            </FormLabel>
+            <Input
+              type="password"
+              placeholder="Enter your password"
+              variant="flushed"
+              required
+              value={userData.password}
+              onChange={(e) => {
+                setUserData({ ...userData, password: e.target.value });
+              }}
+            />
+            <Button
+              type="submit"
+              w="100%"
+              m="auto"
+              mt="40px"
+              borderRadius="20px"
+              fontWeight="bold"
+              // background="#1473e6"
+              bgGradient="linear(to-l, #7928CA, #FF0080)"
+              color="#ffff"
+              _hover="none"
+            >
+              SIGN IN
+            </Button>
+
+            <p
+              style={{
+                textAlign: "center",
+                margin: "20px",
+                fontFamily: "cursive",
+              }}
+            >
+              Already a user?{" "}
+              <span
+                style={{
+                  fontWeight: "bold",
+                  fontFamily: "cursive",
+                  cursor: "pointer",
+                  color: "blue",
+                }}
+              >
+                Log in
+              </span>
+            </p>
+          </form>
+        </Box>
+      </Box>
+    </>
+  );
 };
 
 export { Signup };
