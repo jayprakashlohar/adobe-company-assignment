@@ -1,12 +1,25 @@
 import React from "react";
-import { Box, Text, Heading, FormLabel, Input, Button } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Heading,
+  FormLabel,
+  Input,
+  Button,
+  InputGroup,
+  InputRightElement,
+} from "@chakra-ui/react";
 import { SiAdobe } from "react-icons/si";
 import { useState } from "react";
 import { loginUser } from "../Redux/userSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { BiHide, BiShowAlt } from "react-icons/bi";
 
 const Login = () => {
+  const [show, setShow] = React.useState(false);
+  const handleClick = () => setShow(!show);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [userData, setUserData] = useState({
@@ -53,7 +66,7 @@ const Login = () => {
           </Text>
         </Box>
 
-        {/* Signup Box */}
+        {/* Login Box */}
         <Box
           w="35%"
           h="500px"
@@ -83,16 +96,33 @@ const Login = () => {
             <FormLabel mt="10px" fontFamily="cursive">
               Password{" "}
             </FormLabel>
-            <Input
-              type="password"
-              placeholder="Enter your password"
-              variant="flushed"
-              required
-              value={userData.password}
-              onChange={(e) => {
-                setUserData({ ...userData, password: e.target.value });
-              }}
-            />
+            <InputGroup size="md">
+              <Input
+                pr="4.5rem"
+                type={show ? "text" : "password"}
+                placeholder="Enter password"
+                variant="flushed"
+                required
+                value={userData.password}
+                onChange={(e) => {
+                  setUserData({ ...userData, password: e.target.value });
+                }}
+              />
+              <InputRightElement width="4.5rem">
+                <Button
+                  h="1.75rem"
+                  size="sm"
+                  background="none"
+                  onClick={handleClick}
+                >
+                  {show ? (
+                    <BiHide style={{ width: "20px", height: "20px" }} />
+                  ) : (
+                    <BiShowAlt style={{ width: "20px", height: "20px" }} />
+                  )}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
             <Button
               type="submit"
               w="100%"
@@ -114,17 +144,19 @@ const Login = () => {
                 fontFamily: "cursive",
               }}
             >
-              Don't have an account?{" "}
-              <span
-                style={{
-                  fontWeight: "bold",
-                  fontFamily: "cursive",
-                  cursor: "pointer",
-                  color: "blue",
-                }}
-              >
-                Sign up
-              </span>
+              Don't have an account?
+              <Link to="/">
+                <span
+                  style={{
+                    fontWeight: "bold",
+                    fontFamily: "cursive",
+                    cursor: "pointer",
+                    color: "blue",
+                  }}
+                >
+                  Sign up
+                </span>
+              </Link>
             </p>
           </form>
         </Box>

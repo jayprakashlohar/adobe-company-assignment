@@ -1,6 +1,8 @@
 const express = require("express");
 const { connection } = require("../config/database");
 const { userRouter } = require("../Routes/user.route");
+const { postRouter } = require("../Routes/post.route");
+
 require("dotenv").config();
 const cors = require("cors");
 
@@ -19,6 +21,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/users", userRouter);
+app.use("/posts", postRouter);
 
 app.listen(PORT, async () => {
   try {
