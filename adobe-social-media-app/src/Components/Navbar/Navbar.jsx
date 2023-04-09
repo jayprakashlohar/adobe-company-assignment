@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Text,
@@ -11,14 +11,29 @@ import {
   ModalCloseButton,
   Button,
   useDisclosure,
-  Input,
+  Textarea,
 } from "@chakra-ui/react";
 import { SiAdobe } from "react-icons/si";
 import { FaUserCircle } from "react-icons/fa";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import axios from "axios";
 
 const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [data, setData] = useState({ content: "" });
+
+  const postData = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.post("http://localhost:8080/posts", data, {
+        headers: { authorization: token },
+      });
+      alert("Post create successfully");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Box
@@ -70,11 +85,15 @@ const Navbar = () => {
             <hr style={{ marginTop: "0px" }} />
             <ModalCloseButton />
             <ModalBody>
-              <Input placeholder="Type anything...." />
+              <Textarea
+                placeholder="Typing..."
+                value={data.content}
+                onChange={(e) => setData({ ...data, content: e.target.value })}
+              />
             </ModalBody>
 
             <ModalFooter>
-              <Button variant="ghost" colorScheme="blue">
+              <Button variant="ghost" onClick={postData}>
                 ADD
               </Button>
             </ModalFooter>

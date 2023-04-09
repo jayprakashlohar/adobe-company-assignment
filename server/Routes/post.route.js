@@ -14,6 +14,7 @@ postRouter.get("/", async (req, res) => {
 
 // Create a new post
 postRouter.post("/", async (req, res) => {
+  // console.log("body",req.body)
   try {
     let data = req.body;
     const post = new PostModel(data);
@@ -21,7 +22,7 @@ postRouter.post("/", async (req, res) => {
     // res.send(savedPost);
     res.send({ message: "Post create successfully" });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).send({ message: err.message });
   }
 });
 
@@ -63,26 +64,30 @@ postRouter.delete("/:id", async (req, res) => {
 });
 
 // Increment the like count of a post by id
-postRouter.post("/:id/like", async (req, res) => {
-  res.post.likes += 1;
+postRouter.put("/:id/like", async (req, res) => {
   try {
-    const updatedPost = await res.post.save();
-    res.json(updatedPost);
+    let { id } = req.params;
+    let post = await PostModel.findById(id);
+    post.likes += 1;
+    await PostModel.findByIdAndUpdate({ _id: id }, post);
+    res.send(post);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).send({ msg: err.message });
   }
 });
 
 // Decrement the like count of a post by id
-postRouter.post("/:id/unlike", async (req, res) => {
-  if (res.post.likes > 0) {
-    res.post.likes -= 1;
-  }
+postRouter.put("/:id/unlike", async (req, res) => {
   try {
-    const updatedPost = await res.post.save();
-    res.json(updatedPost);
+    let { id } = req.params;
+    let post = await PostModel.findById(id);
+    if (post.likes > 0) {
+      post.likes -= 1;
+      await PostModel.findByIdAndUpdate({ _id: id }, post);
+    }
+    res.send(post);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(400).send({ msg: err.message });
   }
 });
 
@@ -105,19 +110,5 @@ postRouter.get("/analytics/posts/top-liked", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
-
-// Middleware to get a post by id
-// async function getPost(req, res, next) {
-//   try {
-//     const post = await PostModel.findById(req.params.id);
-//     if (post == null) {
-//       return res.status(404).json({ message: "Post not found" });
-//     }
-//     res.post = post;
-//     next();
-//   } catch (err) {
-//     return res.status(500).json({ message: err.message });
-//   }
-// }
 
 module.exports = { postRouter };

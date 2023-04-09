@@ -56,4 +56,62 @@ userRouter.post("/", async (req, res) => {
   }
 });
 
+// Retrieve a user by id
+userRouter.get("/:id", async (req, res) => {
+  try {
+    let { id } = req.params;
+    let user = await UserModel.findOne(id);
+    res.send(user);
+  } catch (err) {
+    res.status(404).send({ msg: "Something went wrong" });
+  }
+});
+
+// Update a user's details by id
+userRouter.put("/:id", async (req, res) => {
+  try {
+    let { id } = req.params;
+    let updatedPost = await UserModel.findById(id);
+    updatedUser.name = req.body.name;
+    updatedUser.email = req.body.email;
+    updatedUser.bio = req.body.bio;
+    updatedUser.updated_at = Date.now();
+
+    await UserModel.findByIdAndUpdate({ _id: id }, updatedUser);
+    return res.send({ msg: "User Detailed Updated successfully" });
+  } catch (err) {
+    res.status(400).send({ msg: err.message });
+  }
+});
+
+// Delete a user by id
+userRouter.delete("/:id", async (req, res) => {
+  try {
+    let { id } = req.params;
+    await UserModel.findByIdAndDelete(id);
+    res.send({ message: "User deleted successfully" });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+});
+
+// Retrieve the total number of user
+userRouter.get("/analytics/users", async (req, res) => {
+  try {
+    const count = await UserModel.countDocuments();
+    res.json({ count });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+});
+
+// Retrieve the top 5 most liked user
+userRouter.get("/analytics/users/top-liked", async (req, res) => {
+  try {
+    const user = await UserModel.find().sort({ likes: -1 }).limit(5);
+    res.send(user);
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+});
 module.exports = { userRouter };

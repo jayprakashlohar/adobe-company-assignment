@@ -1,131 +1,104 @@
-import React from "react";
-import { Box } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Box, Text } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllPost } from "../Redux/postSlice";
+import { AiOutlineHeart } from "react-icons/ai";
+import axios from "axios";
+// import { BsThreeDots } from "react-icons/bs";
 
 const PostList = () => {
+  let dispatch = useDispatch();
+  let data = useSelector((state) => state.post.allPost);
+
+  // console.log("data", data);
+  // const getUserName = async (id) => {
+  //   try {
+  //     let res = await axios.get(`http://localhost:8080/users/${id}`);
+  //     let { name } = res.data;
+  //     console.log("res", res);
+  //     return name;
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
+  const likePost = async (id) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/posts/${id}/like`,
+        {},
+        {
+          headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+      dispatch(fetchAllPost());
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    dispatch(fetchAllPost());
+  }, []);
+
+
+  
+
   return (
     <>
-      <Box>Here your post</Box>
+      <Box h="100vh" mt="50px">
+        <Box>
+          {data &&
+            data.map((post) => {
+              return (
+                <Box
+                  key={post._id}
+                  bgGradient="linear(to-l, #7928CA, #FF0080)"
+                  color="#ffff"
+                  m="auto"
+                  w="40%"
+                  mb="20px"
+                  borderRadius="5px"
+                >
+                  {/* <BsThreeDots
+                    style={{
+                      flot: "right",
+                      padding: "10px",
+                      color: "black",
+                    }}
+                  /> */}
+                  <Box>{/* <Text>{getUserName(post.user_id)}</Text> */}</Box>
+                  <Text
+                    fontWeight="bold"
+                    fontSize="25px"
+                    fontFamily="cursive"
+                    textAlign="center"
+                  >
+                    {post.content}
+                  </Text>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    gap="5px"
+                    p="10px 0px 5px 5px"
+                  >
+                    <AiOutlineHeart
+                      onClick={() => likePost(post._id)}
+                      style={{
+                        width: "23px",
+                        height: "30px",
+                        cursor: "pointer",
+                      }}
+                    />
+                    <p>{post.likes}likes</p>
+                  </Box>
+                </Box>
+              );
+            })}
+        </Box>
+      </Box>
     </>
   );
 };
 
 export { PostList };
-
-// import { useState, useEffect } from 'react';
-// import axios from 'axios';
-
-// function App() {
-//   const [posts, setPosts] = useState([]);
-//   const [newPost, setNewPost] = useState({
-//     user_id: '',
-//     content: '',
-//   });
-//   const [selectedPost, setSelectedPost] = useState(null);
-
-//   useEffect(() => {
-//     getPosts();
-//   }, []);
-
-//   const getPosts = async () => {
-//     try {
-//       const res = await axios.get('/posts');
-//       setPosts(res.data);
-//     } catch (err) {
-//       console.error(err);
-//     }
-//   };
-
-//   const createPost = async () => {
-//     try {
-//       const res = await axios.post('/posts', newPost);
-//       setPosts([...posts, res.data]);
-//       setNewPost({ user_id: '', content: '' });
-//     } catch (err) {
-//       console.error(err);
-//     }
-//   };
-
-//   const updatePost = async () => {
-//     try {
-//       const res = await axios.put(`/posts/${selectedPost.id}`, selectedPost);
-//       const updatedPosts = posts.map(post => {
-//         if (post.id === res.data.id) {
-//           return res.data;
-//         }
-//         return post;
-//       });
-//       setPosts(updatedPosts);
-//       setSelectedPost(null);
-//     } catch (err) {
-//       console.error(err);
-//     }
-//   };
-
-//   const deletePost = async id => {
-//     try {
-//       await axios.delete(`/posts/${id}`);
-//       const updatedPosts = posts.filter(post => post.id !== id);
-//       setPosts(updatedPosts);
-//     } catch (err) {
-//       console.error(err);
-//     }
-//   };
-
-//   const likePost = async id => {
-//     try {
-//       const res = await axios.post(`/posts/${id}/like`);
-//       const updatedPosts = posts.map(post => {
-//         if (post.id === res.data.id) {
-//           return res.data;
-//         }
-//         return post;
-//       });
-//       setPosts(updatedPosts);
-//     } catch (err) {
-//       console.error(err);
-//     }
-//   };
-
-//   const unlikePost = async id => {
-//     try {
-//       const res = await axios.post(`/posts/${id}/unlike`);
-//       const updatedPosts = posts.map(post => {
-//         if (post.id === res.data.id) {
-//           return res.data;
-//         }
-//         return post;
-//       });
-//       setPosts(updatedPosts);
-//     } catch (err) {
-//       console.error(err);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <h1>Post App</h1>
-//       <h2>Create Post</h2>
-//       <form onSubmit={e => {
-//         e.preventDefault();
-//         createPost();
-//       }}>
-//         <label htmlFor="user_id">User ID:</label>
-//         <input type="text" id="user_id" value={newPost.user_id} onChange={e => setNewPost({ ...newPost, user_id: e.target.value })} />
-//         <br />
-//         <label htmlFor="content">Content:</label>
-//         <textarea id="content" value={newPost.content} onChange={e => setNewPost({ ...newPost, content: e.target.value })}></textarea>
-//         <br />
-//         <button type="submit">Create</button>
-//       </form>
-//       <h2>Posts</h2>
-//       <table>
-//         <thead>
-//           <tr>
-//             <th>ID</th>
-//             <th>User ID</th>
-//             <th>Content</th>
-//             <th>Created At</th>
-//             <th>Updated At</th>
-//             <th>Likes</th>
-//             <th>Actions</th>
-//           </tr>
