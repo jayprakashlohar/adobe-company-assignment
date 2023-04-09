@@ -35,14 +35,14 @@ const Signup = () => {
       <Box
         h="100vh"
         bgGradient="linear(to-l, #7928CA, #FF0080)"
-        display="flex"
+        display={{ base: "inline", sm: "flex", md: "flex", xl: "flex" }}
         justifyContent="space-around"
-        // alignItems="center"
-        // backgroundImage="url('https://t3.ftcdn.net/jpg/00/21/70/82/360_F_21708280_RFKz4O7ImQluB9FgX2mUYFUNDmlLokX6.jpg')"
-        // backgroundPosition="center"
-        // backgroundRepeat="no-repeat"
       >
-        <Box w="30%" h="100px" mt="20%">
+        <Box
+          h="100px"
+          mt="20%"
+          w={{ base: "35%", sm: "30%", md: "50%", xl: "35%" }}
+        >
           <Box display="flex" alignItems="center">
             <SiAdobe
               style={{ color: "#ffff", width: "50px", height: "50px" }}
@@ -58,7 +58,7 @@ const Signup = () => {
 
         {/* Signup Box */}
         <Box
-          w="35%"
+          w={{ base: "90%", sm: "50%", md: "50%", xl: "35%" }}
           h="600px"
           mt="30px"
           background="#ffff"

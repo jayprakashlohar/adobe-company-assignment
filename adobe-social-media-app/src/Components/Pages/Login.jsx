@@ -47,12 +47,12 @@ const Login = () => {
         bgGradient="linear(to-l, #7928CA, #FF0080)"
         display="flex"
         justifyContent="space-around"
-        // alignItems="center"
-        // backgroundImage="url('https://auth.services.adobe.com/img/canvas/TomHegen.jpg')"
-        // backgroundPosition="center"
-        // backgroundRepeat="no-repeat"
       >
-        <Box w="30%" h="100px" mt="20%">
+        <Box
+          h="100px"
+          mt="20%"
+          w={{ base: "35%", sm: "35%", md: "50%", xl: "35%" }}
+        >
           <Box display="flex" alignItems="center">
             <SiAdobe
               style={{ color: "#ffff", width: "50px", height: "50px" }}
