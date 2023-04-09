@@ -22,21 +22,18 @@ import { BiShow } from "react-icons/bi";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 
 const PostList = () => {
+  const [data1, setData1] = useState({ content: "" });
+  const [userId, setUserId] = useState("");
+
   let dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   let data = useSelector((state) => state.post.allPost);
-  // console.log("data", data);
 
-  // const getUserName = async (id) => {
-  //   try {
-  //     let res = await axios.get(`http://localhost:8080/users/${id}`);
-  //     let { name } = res.data;
-  //     console.log("res", res);
-  //     return name;
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  const onModelOpen = (id, content) => {
+    onOpen();
+    setUserId(id);
+    setData1({ ...data1, content });
+  };
 
   const likePost = async (id) => {
     try {
@@ -87,13 +84,15 @@ const PostList = () => {
     try {
       const response = await axios.put(
         `http://localhost:8080/posts/${id}`,
-        {},
+        data1,
         {
           headers: {
             authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
+
+      alert(response.data.msg);
       dispatch(fetchAllPost());
     } catch (error) {
       console.error(error);
@@ -165,7 +164,7 @@ const PostList = () => {
                       />
 
                       <AiFillEdit
-                        onClick={onOpen}
+                        onClick={() => onModelOpen(post._id, post.content)}
                         style={{
                           width: "23px",
                           height: "30px",
@@ -197,10 +196,8 @@ const PostList = () => {
           <ModalBody>
             <Textarea
               placeholder="Typing..."
-              // value={data.content}
-              // onChange={(e) =>
-              //   setData({ ...data, content: e.target.value })
-              // }
+              value={data1.content}
+              onChange={(e) => setData1({ ...data1, content: e.target.value })}
             />
           </ModalBody>
 
@@ -208,7 +205,9 @@ const PostList = () => {
             <Button mr="10px" onClick={onClose}>
               Close
             </Button>
-            <Button variant="ghost">UPDATE</Button>
+            <Button variant="ghost" onClick={() => updatePost(userId)}>
+              UPDATE
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

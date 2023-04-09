@@ -1,13 +1,65 @@
 import React, { useEffect, useState } from "react";
-import { Box, Heading, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  useDisclosure,
+  Input,
+  FormLabel,
+  Textarea,
+  Select,
+} from "@chakra-ui/react";
 import { Navbar } from "../Navbar/Navbar";
 import axios from "axios";
 import { BiShow } from "react-icons/bi";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const UserList = () => {
+  let dispatch = useDispatch();
   const [userData, setUserData] = useState([]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const [userId, setUserId] = useState("");
+  const [updatedData, setUpdatedData] = useState({
+    name: "",
+    email: "",
+    bio: "",
+  });
+
+  const onModelOpen = (id, name, email, bio) => {
+    console.log(name, email, bio);
+    onOpen();
+    setUserId(id);
+    setUpdatedData({ ...updatedData, name, email, bio });
+  };
+
+  const updateUserData = async (id) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/users/${id}`,
+        updatedData,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      alert(response.data.msg);
+      getallUsers();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const getallUsers = async () => {
     try {
@@ -15,6 +67,20 @@ const UserList = () => {
       setUserData(res.data);
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const deleteUser = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:8080/users/${id}`, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      alert("User deleted successfully");
+      getallUsers();
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -69,6 +135,9 @@ const UserList = () => {
                         />
                       </Link>
                       <AiFillEdit
+                        onClick={() =>
+                          onModelOpen(user._id, user.name, user.email, user.bio)
+                        }
                         style={{
                           width: "30px",
                           height: "30px",
@@ -76,6 +145,7 @@ const UserList = () => {
                         }}
                       />
                       <AiFillDelete
+                        onClick={() => deleteUser(user._id)}
                         style={{
                           width: "30px",
                           height: "30px",
@@ -89,6 +159,52 @@ const UserList = () => {
             })}
         </Box>
       </Box>
+      <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader textAlign="center">Update Your Post</ModalHeader>
+          <hr style={{ marginTop: "0px" }} />
+          <ModalCloseButton />
+          <ModalBody>
+            <FormLabel>Name</FormLabel>
+            <Input
+              type="text"
+              placeholder="Name"
+              value={updatedData.name}
+              onChange={(e) =>
+                setUpdatedData({ ...updatedData, name: e.target.value })
+              }
+            />
+            <FormLabel>Email</FormLabel>
+            <Input
+              type="email"
+              placeholder="Email"
+              value={updatedData.email}
+              onChange={(e) =>
+                setUpdatedData({ ...updatedData, email: e.target.value })
+              }
+            />
+            <FormLabel>Bio</FormLabel>
+            <Textarea
+              placeholder="Bio"
+              value={updatedData.bio}
+              onChange={(e) =>
+                setUpdatedData({ ...updatedData, bio: e.target.value })
+              }
+            />
+          </ModalBody>
+
+          <ModalFooter>
+            <Button mr="10px" onClick={onClose}>
+              Close
+            </Button>
+            <Button variant="ghost" onClick={() => updateUserData(userId)}>
+              UPDATE
+            </Button>
+           
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };
