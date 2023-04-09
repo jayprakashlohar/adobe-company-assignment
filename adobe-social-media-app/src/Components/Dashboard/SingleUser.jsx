@@ -3,7 +3,7 @@ import { Box, Button, Text } from "@chakra-ui/react";
 import { Navbar } from "../Navbar/Navbar";
 import { FaUserCircle } from "react-icons/fa";
 
-const UserList = () => {
+const SingleUser = () => {
   return (
     <>
       {/* Navbar */}
@@ -39,4 +39,4 @@ const UserList = () => {
   );
 };
 
-export { UserList };
+export { SingleUser };

@@ -56,6 +56,16 @@ userRouter.post("/", async (req, res) => {
   }
 });
 
+// getall users
+userRouter.get("/", async (req, res) => {
+  try {
+    const allUsers = await UserModel.find();
+    res.send(allUsers);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
 // Retrieve a user by id
 userRouter.get("/:id", async (req, res) => {
   try {

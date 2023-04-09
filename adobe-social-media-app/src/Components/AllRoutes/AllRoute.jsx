@@ -2,8 +2,9 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { Login } from "../Pages/Login";
 import { Signup } from "../Pages/Signup";
-import { UserList } from "../Dashboard/UserList";
 import { PostList } from "../Dashboard/PostList";
+import { SingleUser } from "../Dashboard/SingleUser";
+import { UserList } from "../Pages/UserList";
 
 const AllRoute = () => {
   return (
@@ -11,9 +12,9 @@ const AllRoute = () => {
       <Routes>
         <Route path="/" element={<Signup />}></Route>
         <Route path="/login" element={<Login />}></Route>
-        {/* <Route path="/navbar" element={<Navbar />}></Route> */}
-        <Route path="/userlist" element={<UserList />}></Route>
+        <Route path="/singleuser" element={<SingleUser />}></Route>
         <Route path="/postlist" element={<PostList />}></Route>
+        <Route path="/userlist" element={<UserList />}></Route>
       </Routes>
     </div>
   );

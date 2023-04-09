@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { SiAdobe } from "react-icons/si";
 import { FaUserCircle } from "react-icons/fa";
-import { AiOutlinePlusCircle } from "react-icons/ai";
+// import { AiOutlinePlusCircle } from "react-icons/ai";
 import axios from "axios";
 import { fetchAllPost } from "../Redux/postSlice";
 import { useDispatch } from "react-redux";
@@ -57,24 +57,40 @@ const Navbar = () => {
             />
           </Box>
         </Link>
-        <Box display="flex" gap="50px">
+        <Box display="flex" gap="20px">
           <Box
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            gap="10px"
+            gap="20px"
             // border="1px solid white"
             cursor="pointer"
             p="0px 5px 0px 5px"
           >
-            <AiOutlinePlusCircle
+            <Link to="/userlist">
+              <Text
+                fontWeight="bold"
+                fontSize="20px"
+                fontFamily="cursive"
+                _hover={{ textDecoration: "underline" }}
+              >
+                User List
+              </Text>
+            </Link>
+            {/* <AiOutlinePlusCircle
               style={{ width: "25px", height: "25px", cursor: "pointer" }}
-            />
-            <Text fontWeight="bold" fontSize="20px" onClick={onOpen}>
+            /> */}
+            <Text
+              fontWeight="bold"
+              fontSize="20px"
+              fontFamily="cursive"
+              onClick={onOpen}
+              _hover={{ textDecoration: "underline" }}
+            >
               Create
             </Text>
           </Box>
-          <Link to="/userlist">
+          <Link to="/singleuser">
             <Box>
               <FaUserCircle
                 style={{
