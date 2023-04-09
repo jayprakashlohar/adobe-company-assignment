@@ -15,7 +15,6 @@ import {
 } from "@chakra-ui/react";
 import { SiAdobe } from "react-icons/si";
 import { FaUserCircle } from "react-icons/fa";
-// import { AiOutlinePlusCircle } from "react-icons/ai";
 import axios from "axios";
 import { fetchAllPost } from "../Redux/postSlice";
 import { useDispatch } from "react-redux";
@@ -63,10 +62,19 @@ const Navbar = () => {
             justifyContent="space-between"
             alignItems="center"
             gap="20px"
-            // border="1px solid white"
             cursor="pointer"
             p="0px 5px 0px 5px"
           >
+            <Link to="/postlist">
+              <Text
+                fontWeight="bold"
+                fontSize="20px"
+                fontFamily="cursive"
+                _hover={{ textDecoration: "underline" }}
+              >
+                Post List
+              </Text>
+            </Link>
             <Link to="/userlist">
               <Text
                 fontWeight="bold"
@@ -77,9 +85,7 @@ const Navbar = () => {
                 User List
               </Text>
             </Link>
-            {/* <AiOutlinePlusCircle
-              style={{ width: "25px", height: "25px", cursor: "pointer" }}
-            /> */}
+
             <Text
               fontWeight="bold"
               fontSize="20px"
@@ -90,18 +96,17 @@ const Navbar = () => {
               Create
             </Text>
           </Box>
-          <Link to="/singleuser">
-            <Box>
-              <FaUserCircle
-                style={{
-                  width: "35px",
-                  height: "35px",
-                  marginRight: "10px",
-                  cursor: "pointer",
-                }}
-              />
-            </Box>
-          </Link>
+
+          <Box>
+            <FaUserCircle
+              style={{
+                width: "35px",
+                height: "35px",
+                marginRight: "10px",
+                cursor: "pointer",
+              }}
+            />
+          </Box>
         </Box>
 
         <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>

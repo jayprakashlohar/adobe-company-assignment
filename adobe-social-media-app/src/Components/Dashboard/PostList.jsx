@@ -5,7 +5,8 @@ import { fetchAllPost } from "../Redux/postSlice";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import axios from "axios";
 import { Navbar } from "../Navbar/Navbar";
-// import { BsThreeDots } from "react-icons/bs";
+import { BiShow } from "react-icons/bi";
+import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 
 const PostList = () => {
   let dispatch = useDispatch();
@@ -59,7 +60,7 @@ const PostList = () => {
 
   return (
     <>
-    <Navbar/>
+      <Navbar />
       <Box h="100vh" mt="50px">
         <Box>
           {data &&
@@ -70,7 +71,8 @@ const PostList = () => {
                   bgGradient="linear(to-l, #7928CA, #FF0080)"
                   color="#ffff"
                   m="auto"
-                  w="40%"
+                  w="45%"
+                  p="10px 10px 0px 10px"
                   mb="20px"
                   borderRadius="5px"
                 >
@@ -83,8 +85,8 @@ const PostList = () => {
                   /> */}
                   <Box>{/* <Text>{getUserName(post.user_id)}</Text> */}</Box>
                   <Text
-                    fontWeight="bold"
-                    fontSize="25px"
+                    fontWeight="600"
+                    fontSize="20px"
                     fontFamily="cursive"
                     textAlign="center"
                   >
@@ -114,6 +116,30 @@ const PostList = () => {
                         cursor: "pointer",
                       }}
                     />
+                    <Box display="flex" ml="65%" gap="10px">
+                      <BiShow
+                        style={{
+                          width: "23px",
+                          height: "30px",
+                          cursor: "pointer",
+                        }}
+                      />
+
+                      <AiFillEdit
+                        style={{
+                          width: "23px",
+                          height: "30px",
+                          cursor: "pointer",
+                        }}
+                      />
+                      <AiFillDelete
+                        style={{
+                          width: "23px",
+                          height: "30px",
+                          cursor: "pointer",
+                        }}
+                      />
+                    </Box>
                   </Box>
                 </Box>
               );

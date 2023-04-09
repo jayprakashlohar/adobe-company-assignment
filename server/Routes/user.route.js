@@ -70,7 +70,7 @@ userRouter.get("/", async (req, res) => {
 userRouter.get("/:id", async (req, res) => {
   try {
     let { id } = req.params;
-    let user = await UserModel.findOne(id);
+    let user = await UserModel.findById(id);
     res.send(user);
   } catch (err) {
     res.status(404).send({ msg: "Something went wrong" });

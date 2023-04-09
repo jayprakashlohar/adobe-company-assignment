@@ -4,6 +4,7 @@ import { Navbar } from "../Navbar/Navbar";
 import axios from "axios";
 import { BiShow } from "react-icons/bi";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 const UserList = () => {
   const [userData, setUserData] = useState([]);
@@ -57,7 +58,7 @@ const UserList = () => {
                       <Text>Email : {user.email}</Text>
                     </Box>
                     <Box display="flex" gap="20px">
-                      <Link>
+                      <Link to={`/singleuser/${user._id}`}>
                         {" "}
                         <BiShow
                           style={{
