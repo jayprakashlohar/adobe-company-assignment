@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Text,
@@ -24,20 +24,39 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [data, setData] = useState({ content: "" });
+  const [userData, setUserData] = useState([]);
+  const [data, setData] = useState({ user_id: "", content: "" });
 
   const postData = async () => {
     const token = localStorage.getItem("token");
     try {
-      const response = await axios.post("http://localhost:8080/posts", data, {
-        headers: { authorization: token },
-      });
-      alert("Post create successfully");
-      dispatch(fetchAllPost());
+      if (data.user_id) {
+        const response = await axios.post("http://localhost:8080/posts", data, {
+          headers: { authorization: token },
+        });
+        setData({ ...data, content: "" });
+        alert("Post create successfully");
+        dispatch(fetchAllPost());
+      } else {
+        alert("Please select user");
+      }
     } catch (error) {
       console.log(error);
     }
   };
+
+  const getallUsers = async () => {
+    try {
+      let res = await axios.get("http://localhost:8080/users");
+      setUserData(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getallUsers();
+  }, []);
 
   return (
     <>
@@ -86,6 +105,16 @@ const Navbar = () => {
                 User List
               </Text>
             </Link>
+            <Link to="/">
+              <Text
+                fontWeight="bold"
+                fontSize={{ base: "15px", sm: "20px", md: "20px", xl: "20px" }}
+                fontFamily="cursive"
+                _hover={{ textDecoration: "underline" }}
+              >
+                Analytics
+              </Text>
+            </Link>
 
             <Text
               fontWeight="bold"
@@ -123,16 +152,28 @@ const Navbar = () => {
                 onChange={(e) => setData({ ...data, content: e.target.value })}
               />
               <Box mt="20px">
-                <Select placeholder="Select option">
-                  <option value="option1">Option 1</option>
-                  <option value="option2">Option 2</option>
-                  <option value="option3">Option 3</option>
+                <Select
+                  placeholder="Select User"
+                  onChange={(e) =>
+                    setData({ ...data, user_id: e.target.value })
+                  }
+                >
+                  {userData &&
+                    userData.map((user) => {
+                      return <option value={user._id}>{user.name}</option>;
+                    })}
                 </Select>
               </Box>
             </ModalBody>
 
             <ModalFooter>
-              <Button variant="ghost" onClick={postData}>
+              <Button
+                background="blue"
+                color="#ffff"
+                _hover="none"
+                w="100px"
+                onClick={postData}
+              >
                 ADD
               </Button>
             </ModalFooter>

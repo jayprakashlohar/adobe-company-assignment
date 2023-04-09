@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
 
 app.use("/users", userRouter);
 
-app.use("/posts", authorization, postRouter);
+app.use("/posts", postRouter);
 
 app.listen(PORT, async () => {
   try {
