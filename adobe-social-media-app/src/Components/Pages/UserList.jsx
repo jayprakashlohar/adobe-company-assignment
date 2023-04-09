@@ -43,7 +43,7 @@ const UserList = () => {
                   <Box
                     bgGradient="linear(to-l, #7928CA, #FF0080)"
                     borderRadius="5px"
-                    w="50%"
+                    w={{ base: "90%", sm: "80%", md: "80%", xl: "50%" }}
                     m="auto"
                     display="flex"
                     justifyContent="space-between"

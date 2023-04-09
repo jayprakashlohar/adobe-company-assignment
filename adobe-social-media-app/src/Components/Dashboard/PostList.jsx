@@ -1,5 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Box, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  useDisclosure,
+  Textarea,
+} from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllPost } from "../Redux/postSlice";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
@@ -10,7 +23,9 @@ import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 
 const PostList = () => {
   let dispatch = useDispatch();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   let data = useSelector((state) => state.post.allPost);
+  // console.log("data", data);
 
   // const getUserName = async (id) => {
   //   try {
@@ -54,6 +69,37 @@ const PostList = () => {
     }
   };
 
+  const deletePost = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:8080/posts/${id}`, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      alert("Post deleted successfully");
+      dispatch(fetchAllPost());
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const updatePost = async (id) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/posts/${id}`,
+        {},
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      dispatch(fetchAllPost());
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     dispatch(fetchAllPost());
   }, []);
@@ -71,19 +117,12 @@ const PostList = () => {
                   bgGradient="linear(to-l, #7928CA, #FF0080)"
                   color="#ffff"
                   m="auto"
-                  w="45%"
+                  w={{ base: "90%", sm: "90%", md: "45%", xl: "45%" }}
                   p="10px 10px 0px 10px"
                   mb="20px"
                   borderRadius="5px"
                 >
-                  {/* <BsThreeDots
-                    style={{
-                      flot: "right",
-                      padding: "10px",
-                      color: "black",
-                    }}
-                  /> */}
-                  <Box>{/* <Text>{getUserName(post.user_id)}</Text> */}</Box>
+                  {/* <p>{post.created_at}</p> */}
                   <Text
                     fontWeight="600"
                     fontSize="20px"
@@ -126,13 +165,16 @@ const PostList = () => {
                       />
 
                       <AiFillEdit
+                        onClick={onOpen}
                         style={{
                           width: "23px",
                           height: "30px",
                           cursor: "pointer",
                         }}
                       />
+
                       <AiFillDelete
+                        onClick={() => deletePost(post._id)}
                         style={{
                           width: "23px",
                           height: "30px",
@@ -146,6 +188,30 @@ const PostList = () => {
             })}
         </Box>
       </Box>
+      <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader textAlign="center">Update Your Post</ModalHeader>
+          <hr style={{ marginTop: "0px" }} />
+          <ModalCloseButton />
+          <ModalBody>
+            <Textarea
+              placeholder="Typing..."
+              // value={data.content}
+              // onChange={(e) =>
+              //   setData({ ...data, content: e.target.value })
+              // }
+            />
+          </ModalBody>
+
+          <ModalFooter>
+            <Button mr="10px" onClick={onClose}>
+              Close
+            </Button>
+            <Button variant="ghost">UPDATE</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };

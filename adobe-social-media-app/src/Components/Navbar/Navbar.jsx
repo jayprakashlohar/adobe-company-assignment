@@ -68,7 +68,7 @@ const Navbar = () => {
             <Link to="/postlist">
               <Text
                 fontWeight="bold"
-                fontSize="20px"
+                fontSize={{ base: "15px", sm: "20px", md: "20px", xl: "20px" }}
                 fontFamily="cursive"
                 _hover={{ textDecoration: "underline" }}
               >
@@ -78,7 +78,7 @@ const Navbar = () => {
             <Link to="/userlist">
               <Text
                 fontWeight="bold"
-                fontSize="20px"
+                fontSize={{ base: "15px", sm: "20px", md: "20px", xl: "20px" }}
                 fontFamily="cursive"
                 _hover={{ textDecoration: "underline" }}
               >
@@ -88,7 +88,7 @@ const Navbar = () => {
 
             <Text
               fontWeight="bold"
-              fontSize="20px"
+              fontSize={{ base: "15px", sm: "20px", md: "20px", xl: "20px" }}
               fontFamily="cursive"
               onClick={onOpen}
               _hover={{ textDecoration: "underline" }}
