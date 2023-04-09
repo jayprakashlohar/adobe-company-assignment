@@ -1,9 +1,10 @@
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+// const { UserModel } = require("../Models/user.model");
 
 const authorization = (req, res, next) => {
   const { authorization } = req.headers;
-  
+
   if (!authorization) {
     return res.status(401).json({ error: "you must be logged in!" });
   }
@@ -17,6 +18,10 @@ const authorization = (req, res, next) => {
     req.body.user_id = userID;
 
     next();
+    // UserModel.findById(userID).then((userID) => {
+    //   req.body.user_id = userID;
+    //   next();
+    // });
   });
 };
 

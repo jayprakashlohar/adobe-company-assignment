@@ -17,8 +17,12 @@ import { SiAdobe } from "react-icons/si";
 import { FaUserCircle } from "react-icons/fa";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import axios from "axios";
+import { fetchAllPost } from "../Redux/postSlice";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [data, setData] = useState({ content: "" });
 
@@ -29,6 +33,7 @@ const Navbar = () => {
         headers: { authorization: token },
       });
       alert("Post create successfully");
+      dispatch(fetchAllPost());
     } catch (error) {
       console.log(error);
     }
@@ -44,11 +49,14 @@ const Navbar = () => {
         bgGradient="linear(to-l, #7928CA, #FF0080)"
         color="#ffff"
       >
-        <Box>
-          <SiAdobe
-            style={{ width: "35px", height: "35px", cursor: "pointer" }}
-          />
-        </Box>
+        <Link to="/postlist">
+          {" "}
+          <Box>
+            <SiAdobe
+              style={{ width: "35px", height: "35px", cursor: "pointer" }}
+            />
+          </Box>
+        </Link>
         <Box display="flex" gap="50px">
           <Box
             display="flex"
@@ -66,16 +74,18 @@ const Navbar = () => {
               Create
             </Text>
           </Box>
-          <Box>
-            <FaUserCircle
-              style={{
-                width: "35px",
-                height: "35px",
-                marginRight: "10px",
-                cursor: "pointer",
-              }}
-            />
-          </Box>
+          <Link to="/userlist">
+            <Box>
+              <FaUserCircle
+                style={{
+                  width: "35px",
+                  height: "35px",
+                  marginRight: "10px",
+                  cursor: "pointer",
+                }}
+              />
+            </Box>
+          </Link>
         </Box>
 
         <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>

@@ -71,7 +71,7 @@ userRouter.get("/:id", async (req, res) => {
 userRouter.put("/:id", async (req, res) => {
   try {
     let { id } = req.params;
-    let updatedPost = await UserModel.findById(id);
+    let updatedUser = await UserModel.findById(id);
     updatedUser.name = req.body.name;
     updatedUser.email = req.body.email;
     updatedUser.bio = req.body.bio;
@@ -114,4 +114,5 @@ userRouter.get("/analytics/users/top-liked", async (req, res) => {
     res.status(500).send({ message: err.message });
   }
 });
+
 module.exports = { userRouter };

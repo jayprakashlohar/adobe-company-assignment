@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Box, Text } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllPost } from "../Redux/postSlice";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import axios from "axios";
+import { Navbar } from "../Navbar/Navbar";
 // import { BsThreeDots } from "react-icons/bs";
 
 const PostList = () => {
   let dispatch = useDispatch();
   let data = useSelector((state) => state.post.allPost);
 
-  // console.log("data", data);
   // const getUserName = async (id) => {
   //   try {
   //     let res = await axios.get(`http://localhost:8080/users/${id}`);
@@ -36,16 +36,30 @@ const PostList = () => {
       console.error(error);
     }
   };
+  const dislikePost = async (id) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/posts/${id}/unlike`,
+        {},
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      dispatch(fetchAllPost());
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     dispatch(fetchAllPost());
   }, []);
 
-
-  
-
   return (
     <>
+    <Navbar/>
       <Box h="100vh" mt="50px">
         <Box>
           {data &&
@@ -82,7 +96,7 @@ const PostList = () => {
                     gap="5px"
                     p="10px 0px 5px 5px"
                   >
-                    <AiOutlineHeart
+                    <AiFillLike
                       onClick={() => likePost(post._id)}
                       style={{
                         width: "23px",
@@ -90,7 +104,16 @@ const PostList = () => {
                         cursor: "pointer",
                       }}
                     />
+
                     <p>{post.likes}likes</p>
+                    <AiFillDislike
+                      onClick={() => dislikePost(post._id)}
+                      style={{
+                        width: "23px",
+                        height: "30px",
+                        cursor: "pointer",
+                      }}
+                    />
                   </Box>
                 </Box>
               );

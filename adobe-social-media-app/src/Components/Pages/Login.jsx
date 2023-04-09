@@ -33,7 +33,7 @@ const Login = () => {
       .then((res) => {
         alert(res.response);
         if (res.response === "You are successfully logged in") {
-          navigate("/");
+          navigate("/postlist");
         }
       })
       .catch((err) => {
