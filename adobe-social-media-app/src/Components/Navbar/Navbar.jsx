@@ -31,9 +31,13 @@ const Navbar = () => {
     const token = localStorage.getItem("token");
     try {
       if (data.user_id) {
-        const response = await axios.post("http://localhost:8080/posts", data, {
-          headers: { authorization: token },
-        });
+        const response = await axios.post(
+          "https://long-rose-duck-robe.cyclic.app/posts",
+          data,
+          {
+            headers: { authorization: token },
+          }
+        );
         setData({ ...data, content: "" });
         alert("Post create successfully");
         dispatch(fetchAllPost());
@@ -47,7 +51,7 @@ const Navbar = () => {
 
   const getallUsers = async () => {
     try {
-      let res = await axios.get("http://localhost:8080/users");
+      let res = await axios.get("https://long-rose-duck-robe.cyclic.app/users");
       setUserData(res.data);
     } catch (err) {
       console.log(err);
@@ -68,7 +72,7 @@ const Navbar = () => {
         bgGradient="linear(to-l, #7928CA, #FF0080)"
         color="#ffff"
       >
-        <Link to="/postlist">
+        <Link to="/">
           {" "}
           <Box>
             <SiAdobe
@@ -105,7 +109,7 @@ const Navbar = () => {
                 User List
               </Text>
             </Link>
-            <Link to="/">
+            <Link to="/analytics">
               <Text
                 fontWeight="bold"
                 fontSize={{ base: "15px", sm: "20px", md: "20px", xl: "20px" }}

@@ -38,7 +38,7 @@ const PostList = () => {
   const likePost = async (id) => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/posts/${id}/like`,
+        `https://long-rose-duck-robe.cyclic.app/posts/${id}/like`,
         {},
         {
           headers: { authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -52,7 +52,7 @@ const PostList = () => {
   const dislikePost = async (id) => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/posts/${id}/unlike`,
+        `https://long-rose-duck-robe.cyclic.app/posts/${id}/unlike`,
         {},
         {
           headers: {
@@ -68,11 +68,14 @@ const PostList = () => {
 
   const deletePost = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/posts/${id}`, {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await axios.delete(
+        `https://long-rose-duck-robe.cyclic.app/posts/${id}`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       alert("Post deleted successfully");
       dispatch(fetchAllPost());
     } catch (error) {
@@ -83,7 +86,7 @@ const PostList = () => {
   const updatePost = async (id) => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/posts/${id}`,
+        `https://long-rose-duck-robe.cyclic.app/posts/${id}`,
         data1,
         {
           headers: {

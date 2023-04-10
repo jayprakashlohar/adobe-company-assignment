@@ -58,11 +58,14 @@ export default userSlice.reducer;
 // Signup And Login API
 export const signupUser = (data) => async (dispatch) => {
   try {
-    const sendData = await fetch("http://localhost:8080/users/signup", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    const sendData = await fetch(
+      "https://long-rose-duck-robe.cyclic.app/users/signup",
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(data),
+      }
+    );
     const res = await sendData.json();
     return res;
   } catch (err) {
@@ -73,11 +76,14 @@ export const signupUser = (data) => async (dispatch) => {
 
 export const loginUser = (data) => async (dispatch) => {
   try {
-    const sendData = await fetch("http://localhost:8080/users", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    const sendData = await fetch(
+      "https://long-rose-duck-robe.cyclic.app/users",
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(data),
+      }
+    );
     const res = await sendData.json();
     localStorage.setItem("token", res.token);
     return res;

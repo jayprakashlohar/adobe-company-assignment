@@ -25,7 +25,7 @@ export default postSlice.reducer;
 
 export const fetchAllPost = () => async (dispatch) => {
   try {
-    let res = await axios.get("http://localhost:8080/posts", {
+    let res = await axios.get("https://long-rose-duck-robe.cyclic.app/posts", {
       headers: { authorization: localStorage.getItem("token") },
     });
 
@@ -34,5 +34,3 @@ export const fetchAllPost = () => async (dispatch) => {
     console.log(err);
   }
 };
-
-

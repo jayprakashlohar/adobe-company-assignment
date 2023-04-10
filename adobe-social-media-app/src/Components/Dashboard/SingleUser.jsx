@@ -12,7 +12,9 @@ const SingleUser = () => {
 
   const userData = async () => {
     try {
-      let res = await axios.get(`http://localhost:8080/users/${id}`);
+      let res = await axios.get(
+        `https://long-rose-duck-robe.cyclic.app/users/${id}`
+      );
       setSingleUserData(res.data);
     } catch (err) {
       console.log(err);
@@ -59,7 +61,7 @@ const SingleUser = () => {
             </Text>
           </Box>
           <Box borderTop="1px solid gray" w="90%" m="auto" mt="20px"></Box>
-          <Box>all post</Box>
+          {/* <Box>all post</Box> */}
         </Box>
       </Box>
     </>

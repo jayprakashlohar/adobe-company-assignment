@@ -46,7 +46,7 @@ const UserList = () => {
   const updateUserData = async (id) => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/users/${id}`,
+        `https://long-rose-duck-robe.cyclic.app/users/${id}`,
         updatedData,
         {
           headers: {
@@ -63,7 +63,7 @@ const UserList = () => {
 
   const getallUsers = async () => {
     try {
-      let res = await axios.get("http://localhost:8080/users");
+      let res = await axios.get("https://long-rose-duck-robe.cyclic.app/users");
       setUserData(res.data);
     } catch (err) {
       console.log(err);
@@ -72,11 +72,14 @@ const UserList = () => {
 
   const deleteUser = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/users/${id}`, {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await axios.delete(
+        `https://long-rose-duck-robe.cyclic.app/users/${id}`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       alert("User deleted successfully");
       getallUsers();
     } catch (error) {
@@ -162,7 +165,7 @@ const UserList = () => {
       <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader textAlign="center">Update Your Post</ModalHeader>
+          <ModalHeader textAlign="center">Update Your Details</ModalHeader>
           <hr style={{ marginTop: "0px" }} />
           <ModalCloseButton />
           <ModalBody>
@@ -201,7 +204,6 @@ const UserList = () => {
             <Button variant="ghost" onClick={() => updateUserData(userId)}>
               UPDATE
             </Button>
-           
           </ModalFooter>
         </ModalContent>
       </Modal>
