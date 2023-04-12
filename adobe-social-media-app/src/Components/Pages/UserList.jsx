@@ -16,6 +16,7 @@ import {
   FormLabel,
   Textarea,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 import { Navbar } from "../Navbar/Navbar";
 import axios from "axios";
@@ -25,6 +26,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 const UserList = () => {
+  const toast = useToast();
   let dispatch = useDispatch();
   const [userData, setUserData] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -37,7 +39,6 @@ const UserList = () => {
   });
 
   const onModelOpen = (id, name, email, bio) => {
-    console.log(name, email, bio);
     onOpen();
     setUserId(id);
     setUpdatedData({ ...updatedData, name, email, bio });
@@ -54,7 +55,14 @@ const UserList = () => {
           },
         }
       );
-      alert(response.data.msg);
+      toast({
+        title: response.data.msg,
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
+
       getallUsers();
     } catch (error) {
       console.error(error);
@@ -80,7 +88,14 @@ const UserList = () => {
           },
         }
       );
-      alert("User deleted successfully");
+      toast({
+        title: "User deleted successfully",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
+
       getallUsers();
     } catch (error) {
       console.error(error);
@@ -198,10 +213,19 @@ const UserList = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button mr="10px" onClick={onClose}>
+            <Button
+              mr="10px"
+              colorScheme="red"
+              variant="solid"
+              onClick={onClose}
+            >
               Close
             </Button>
-            <Button variant="ghost" onClick={() => updateUserData(userId)}>
+            <Button
+              colorScheme="teal"
+              variant="solid"
+              onClick={() => updateUserData(userId)}
+            >
               UPDATE
             </Button>
           </ModalFooter>

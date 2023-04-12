@@ -6,6 +6,7 @@ const Analytics = () => {
   const [countUser, setCountUser] = useState(0);
   const [countPost, setCountPost] = useState(0);
   const [countLike, setCountLike] = useState([]);
+  const [activeUsers, setActiveUsers] = useState([]);
 
   const getTotalUsers = async () => {
     try {
@@ -34,8 +35,17 @@ const Analytics = () => {
       let res = await axios.get(
         "https://long-rose-duck-robe.cyclic.app/posts/analytics/posts/top-liked"
       );
-      console.log("res", res.data);
       setCountLike(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const topActiveUsers = async () => {
+    try {
+      let res = await axios.get(
+        "https://long-rose-duck-robe.cyclic.app/users/analytics/users/top-active"
+      );
+      setActiveUsers(res.data);
     } catch (err) {
       console.log(err);
     }
@@ -45,6 +55,7 @@ const Analytics = () => {
     getTotalUsers();
     getTotalPost();
     topLikes();
+    topActiveUsers();
   }, []);
 
   return (
@@ -122,19 +133,30 @@ const Analytics = () => {
         </Box>
         <Box
           bgGradient="linear(to-l, #7928CA, #FF0080)"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
           gap="20px"
           color="#ffff"
           p="5px"
           w="80%"
           m="auto"
-          mt="10px"
+          mt="20px"
         >
           <Heading textAlign="center" fontSize="20px" fontFamily="cursive">
             Top-Five Active Users
           </Heading>
+          {activeUsers &&
+            activeUsers.map((user) => {
+              return (
+                <Box mt="20px" key={user._id}>
+                  <Box border="1px solid white" p="10px" mb="10px">
+                    <Text fontSize="20px" fontFamily="cursive">
+                      {user.name}
+                    </Text>
+                    <p>{user.email}</p>
+                    <p>Created_at : {user.created_at}</p>
+                  </Box>
+                </Box>
+              );
+            })}
         </Box>
       </Box>
     </>

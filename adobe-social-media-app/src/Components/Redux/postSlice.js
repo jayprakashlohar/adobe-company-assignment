@@ -5,9 +5,9 @@ const postSlice = createSlice({
   name: "post",
   initialState: {
     allPost: [],
+    isLoading: false,
+    isError: false,
   },
-  isLoading: true,
-  isError: false,
 
   reducers: {
     allData(state, action) {
@@ -18,19 +18,34 @@ const postSlice = createSlice({
         isError: false,
       };
     },
+    setIsLoading(state, action) {
+      return {
+        ...state,
+        isLoading: action.payload,
+      };
+    },
+    setIsError(state, action) {
+      return {
+        ...state,
+        isError: action.payload,
+      };
+    },
   },
 });
-export const { allData } = postSlice.actions;
+
+export const { allData, setIsLoading, setIsError } = postSlice.actions;
 export default postSlice.reducer;
 
 export const fetchAllPost = () => async (dispatch) => {
   try {
+    dispatch(setIsLoading(true));
     let res = await axios.get("https://long-rose-duck-robe.cyclic.app/posts", {
       headers: { authorization: localStorage.getItem("token") },
     });
 
     dispatch(allData(res.data));
   } catch (err) {
+    dispatch(setIsError());
     console.log(err);
   }
 };

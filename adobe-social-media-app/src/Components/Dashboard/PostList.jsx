@@ -12,6 +12,8 @@ import {
   Button,
   useDisclosure,
   Textarea,
+  Heading,
+  useToast,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllPost } from "../Redux/postSlice";
@@ -24,10 +26,12 @@ import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 const PostList = () => {
   const [data1, setData1] = useState({ content: "" });
   const [userId, setUserId] = useState("");
-
+  const toast = useToast();
   let dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   let data = useSelector((state) => state.post.allPost);
+  let loading = useSelector((state) => state.post.isLoading);
+  // let error = useSelector((state) => state.post.isError);
 
   const onModelOpen = (id, content) => {
     onOpen();
@@ -76,7 +80,14 @@ const PostList = () => {
           },
         }
       );
-      alert("Post deleted successfully");
+      toast({
+        title: "Post deleted successfully",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
+
       dispatch(fetchAllPost());
     } catch (error) {
       console.error(error);
@@ -94,8 +105,14 @@ const PostList = () => {
           },
         }
       );
+      toast({
+        title: response.data.msg,
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top",
+      });
 
-      alert(response.data.msg);
       dispatch(fetchAllPost());
     } catch (error) {
       console.error(error);
@@ -109,6 +126,11 @@ const PostList = () => {
   return (
     <>
       <Navbar />
+      {loading && (
+        <Heading textAlign="center" m="10px" fontSize="22px">
+          Loading...
+        </Heading>
+      )}
       <Box h="100vh" mt="50px">
         <Box>
           {data &&
@@ -205,10 +227,19 @@ const PostList = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button mr="10px" onClick={onClose}>
-              Close
+            <Button
+              mr="10px"
+              onClick={onClose}
+              colorScheme="red"
+              variant="solid"
+            >
+              CLOSE
             </Button>
-            <Button variant="ghost" onClick={() => updatePost(userId)}>
+            <Button
+              colorScheme="teal"
+              variant="solid"
+              onClick={() => updatePost(userId)}
+            >
               UPDATE
             </Button>
           </ModalFooter>

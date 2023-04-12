@@ -13,6 +13,7 @@ import {
   useDisclosure,
   Textarea,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 import { SiAdobe } from "react-icons/si";
 import { FaUserCircle } from "react-icons/fa";
@@ -22,6 +23,7 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
+  const toast = useToast();
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [userData, setUserData] = useState([]);
@@ -39,10 +41,23 @@ const Navbar = () => {
           }
         );
         setData({ ...data, content: "" });
-        alert("Post create successfully");
+        toast({
+          title: "Post create successfully",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+          position: "top",
+        });
+
         dispatch(fetchAllPost());
       } else {
-        alert("Please select user");
+        toast({
+          title: "Please select use",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "top",
+        });
       }
     } catch (error) {
       console.log(error);
@@ -93,7 +108,7 @@ const Navbar = () => {
               <Text
                 fontWeight="bold"
                 fontSize={{ base: "15px", sm: "20px", md: "20px", xl: "20px" }}
-                fontFamily="cursive"
+                fontFamily="sans-serif"
                 _hover={{ textDecoration: "underline" }}
               >
                 Post List
@@ -103,7 +118,7 @@ const Navbar = () => {
               <Text
                 fontWeight="bold"
                 fontSize={{ base: "15px", sm: "20px", md: "20px", xl: "20px" }}
-                fontFamily="cursive"
+                fontFamily="sans-serif"
                 _hover={{ textDecoration: "underline" }}
               >
                 User List
@@ -113,7 +128,7 @@ const Navbar = () => {
               <Text
                 fontWeight="bold"
                 fontSize={{ base: "15px", sm: "20px", md: "20px", xl: "20px" }}
-                fontFamily="cursive"
+                fontFamily="sans-serif"
                 _hover={{ textDecoration: "underline" }}
               >
                 Analytics
@@ -123,7 +138,7 @@ const Navbar = () => {
             <Text
               fontWeight="bold"
               fontSize={{ base: "15px", sm: "20px", md: "20px", xl: "20px" }}
-              fontFamily="cursive"
+              fontFamily="sans-serif"
               onClick={onOpen}
               _hover={{ textDecoration: "underline" }}
             >
@@ -149,9 +164,10 @@ const Navbar = () => {
             <ModalHeader textAlign="center">Create new post</ModalHeader>
             <hr style={{ marginTop: "0px" }} />
             <ModalCloseButton />
+
             <ModalBody>
               <Textarea
-                placeholder="Typing..."
+                placeholder="Write your post..."
                 value={data.content}
                 onChange={(e) => setData({ ...data, content: e.target.value })}
               />
@@ -164,7 +180,11 @@ const Navbar = () => {
                 >
                   {userData &&
                     userData.map((user) => {
-                      return <option value={user._id}>{user.name}</option>;
+                      return (
+                        <option key={user._id} value={user._id}>
+                          {user.name}
+                        </option>
+                      );
                     })}
                 </Select>
               </Box>
@@ -172,10 +192,10 @@ const Navbar = () => {
 
             <ModalFooter>
               <Button
-                background="blue"
+                bgGradient="linear(to-l, #7928CA, #FF0080)"
                 color="#ffff"
                 _hover="none"
-                w="100px"
+                w="100%"
                 onClick={postData}
               >
                 ADD
